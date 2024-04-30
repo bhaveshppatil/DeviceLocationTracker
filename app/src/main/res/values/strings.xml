@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DeviceLocationTracker</string>
+    <string name="splash_image">Splash Image</string>
+    <string name="about_device_tracker">Track your live location in real-time and effortlessly save your data with our device location tracker. Download all your location history in convenient file formats, ensuring your journeys are documented and accessible whenever you need them.</string>
+    <string name="let_s_explore">Let\'s Explore</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="Start">Start Fetch</string>
+    <string name="stop">Stop Fetch</string>
+    <string name="download">Download Data</string>
+    <string name="no_location_data_available">No location data available to download</string>
+</resources>

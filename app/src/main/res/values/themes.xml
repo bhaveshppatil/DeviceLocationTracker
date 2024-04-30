@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Define your custom styles here -->
+    <style name="Theme.DeviceLocationTracker" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme attributes as needed -->
+        <!-- For example, you can customize colors, typography, etc. -->
+        <!-- Example:
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_dark_color</item>
+        <item name="colorAccent">@color/accent_color</item>
+        <item name="android:textColorPrimary">@color/text_primary_color</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color</item>
+        <item name="android:fontFamily">@font/my_custom_font</item>
+        -->
+    </style>
+
+</resources>
