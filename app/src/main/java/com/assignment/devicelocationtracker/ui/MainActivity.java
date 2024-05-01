@@ -42,18 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private final List<LocationData> locationList = new ArrayList<>();
     private ActivityMainBinding binding;
     private LocationUpdateService.LocationUpdateServiceBinder serviceBinder;
-    private final ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            serviceBinder = (LocationUpdateService.LocationUpdateServiceBinder) service;
-            observeLocationUpdates();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            serviceBinder = null;
-        }
-    };
+    private ServiceConnection serviceConnection;
+    private Observer<Location> locationObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,51 +55,53 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        binding.btnStart.setOnClickListener(v -> requestLocationUpdates());
+        binding.btnStop.setOnClickListener(v -> stopLocationService());
+        binding.btnDownload.setOnClickListener(v -> downloadLocationData());
 
-        binding.btnStart.setOnClickListener(v -> {
-            if (PermissionUtils.hasLocationPermission(this)) {
-                startLocationService();
-            } else {
-                // Request location permissions
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.REQUEST_LOCATION_PERMISSION);
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                serviceBinder = (LocationUpdateService.LocationUpdateServiceBinder) service;
+                observeLocationUpdates();
             }
-        });
 
-        binding.btnStop.setOnClickListener(v -> {
-            if (serviceBinder != null) {
-                serviceBinder.getService().stopLocationUpdates();
-                unbindService(serviceConnection);
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
                 serviceBinder = null;
-                ToastUtils.showShortToast(this, getString(R.string.stopped_location_service));
             }
-        });
+        };
 
-        binding.btnDownload.setOnClickListener(v -> {
-            if (locationList.isEmpty()) {
-                ToastUtils.showShortToast(this, getString(R.string.no_location_data_available));
-            } else {
-                saveLocationDataToFile(locationList);
-            }
-        });
+        locationObserver = location -> {
+            updateUIWithLocation(location);
+            saveLocationData(location);
+        };
+    }
+
+    private void requestLocationUpdates() {
+        if (PermissionUtils.hasLocationPermission(this)) {
+            binding.progressCircular.setVisibility(View.VISIBLE);
+            Intent serviceIntent = new Intent(this, LocationUpdateService.class);
+            startService(serviceIntent);
+            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.REQUEST_LOCATION_PERMISSION);
+        }
+    }
+
+    private void stopLocationService() {
+        if (serviceBinder != null) {
+            serviceBinder.getService().stopLocationUpdates();
+            unbindService(serviceConnection);
+            serviceBinder = null;
+            ToastUtils.showShortToast(this, getString(R.string.stopped_location_service));
+        }
     }
 
     private void observeLocationUpdates() {
         if (serviceBinder != null) {
-            serviceBinder.getService().locationLiveData.observe(this, new Observer<Location>() {
-                @Override
-                public void onChanged(Location location) {
-                    updateUIWithLocation(location);
-                    saveLocationData(location);
-                }
-            });
+            serviceBinder.getService().locationLiveData.observe(this, locationObserver);
         }
-    }
-
-    private void startLocationService() {
-        binding.progressCircular.setVisibility(View.VISIBLE);
-        Intent serviceIntent = new Intent(this, LocationUpdateService.class);
-        startService(serviceIntent);
-        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void updateUIWithLocation(Location location) {
@@ -118,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         binding.tvLonValue.setText(String.valueOf(location.getLongitude()));
         ColorUtils.setRandomTextColor(binding.tvLatValue);
         ColorUtils.setRandomTextColor(binding.tvLonValue);
-
     }
 
     private void saveLocationData(Location location) {
@@ -129,28 +120,23 @@ public class MainActivity extends AppCompatActivity {
         locationList.add(locationData);
     }
 
-    private void saveLocationDataToFile(List<LocationData> locationList) {
-        SaveLocationDataTask saveTask = new SaveLocationDataTask(this, new OnSaveCompleteListener() {
-            @Override
-            public void onSaveComplete(boolean success) {
+    private void downloadLocationData() {
+        if (locationList.isEmpty()) {
+            ToastUtils.showShortToast(this, getString(R.string.no_location_data_available));
+        } else {
+            SaveLocationDataTask saveTask = new SaveLocationDataTask(this, success -> {
                 if (success) {
-                    // Save operation completed successfully, start the download process
-                    downloadLocationData();
+                    downloadTask();
                 } else {
                     ToastUtils.showShortToast(MainActivity.this, getString(R.string.failed_to_save_location_data));
                 }
-            }
-        });
-        saveTask.execute(locationList);
+            });
+            saveTask.execute(locationList);
+        }
     }
 
-    private void downloadLocationData() {
-        DownloadLocationDataTask downloadTask = new DownloadLocationDataTask(this, new OnDownloadCompleteListener() {
-            @Override
-            public void onDownloadComplete(File file) {
-                FileUtils.viewCsvFile(MainActivity.this, file);
-            }
-        });
+    private void downloadTask() {
+        DownloadLocationDataTask downloadTask = new DownloadLocationDataTask(this, file -> FileUtils.viewCsvFile(MainActivity.this, file));
         downloadTask.execute();
     }
 
@@ -159,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.REQUEST_LOCATION_PERMISSION) {
             if (PermissionUtils.hasLocationPermission(this)) {
-                startLocationService();
+                requestLocationUpdates();
             } else {
-                ToastUtils.showShortToast(this, "Location permission denied");
+                ToastUtils.showShortToast(this, getString(R.string.location_permission_denied));
             }
         }
     }
@@ -169,13 +155,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Unbind from the service to avoid memory leaks
         if (serviceBinder != null) {
             unbindService(serviceConnection);
             serviceBinder = null;
         }
         locationList.clear();
     }
-
-
 }
