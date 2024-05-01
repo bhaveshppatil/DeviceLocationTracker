@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Define your custom styles here -->
-    <style name="Theme.DeviceLocationTracker" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.DeviceLocationTracker" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme attributes as needed -->
         <!-- For example, you can customize colors, typography, etc. -->
         <!-- Example:

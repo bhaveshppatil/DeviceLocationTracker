@@ -9,4 +9,6 @@
     <string name="stop">Stop Fetch</string>
     <string name="download">Download Data</string>
     <string name="no_location_data_available">No location data available to download</string>
+    <string name="stopped_location_service">Stopped location service</string>
+    <string name="failed_to_save_location_data">Failed to save location data</string>
 </resources>

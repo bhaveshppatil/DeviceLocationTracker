@@ -7,146 +7,116 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/_20dp"
         tools:context=".ui.MainActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clLatitude"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvLatName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20dp"
-            app:layout_constraintBottom_toTopOf="@+id/clLongitude"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/latitude"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@id/tvLatName"
+            app:layout_constraintEnd_toStartOf="@id/tvLatValue"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/tvLatName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="start"
-                android:text="@string/latitude"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toStartOf="@id/tvLatValue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/tvLatValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="start"
-                android:text="74.3878493"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvLatName"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clLongitude"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvLatValue"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20dp"
-            app:layout_constraintBottom_toTopOf="@id/rlButtonView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:fontFamily="sans-serif-medium"
+            android:text="__._____"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/tvLatName"
+            app:layout_constraintTop_toTopOf="@id/tvLatName" />
 
-            <TextView
-                android:id="@+id/tvLonName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="start"
-                android:text="@string/longitude"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toStartOf="@id/tvLonValue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/tvLonValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="start"
-                android:text="24.848344"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvLonName"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlButtonView"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvLonName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20dp"
-            android:layout_marginTop="@dimen/_50dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/longitude"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@id/btnStart"
+            app:layout_constraintStart_toStartOf="@id/tvLatName"
+            app:layout_constraintTop_toBottomOf="@id/tvLatName" />
+
+        <TextView
+            android:id="@+id/tvLonValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="__._____"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/tvLonName"
+            app:layout_constraintTop_toTopOf="@id/tvLonName" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20dp"
             android:layout_marginEnd="@dimen/_20dp"
-            android:orientation="horizontal"
+            android:background="@drawable/bg_rounded"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/Start"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_20sp"
+            app:layout_constraintBottom_toTopOf="@id/btnDownload"
+            app:layout_constraintEnd_toStartOf="@id/btnStop"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLonName" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/stop"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btnStart"
+            app:layout_constraintTop_toTopOf="@id/btnStart" />
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20dp"
+            android:layout_marginBottom="@dimen/_50dp"
+            android:background="@drawable/bg_rounded"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/download"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnStart" />
 
-            <LinearLayout
-                android:id="@+id/llUpperButtons"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_60dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <Button
-                    android:id="@+id/btnStart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/Start"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/_20sp" />
-
-                <Space
-                    android:layout_width="@dimen/_20dp"
-                    android:layout_height="match_parent" />
-
-                <Button
-                    android:id="@+id/btnStop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/stop"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/_20sp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnDownload"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_60dp"
-                android:layout_below="@id/llUpperButtons"
-                android:layout_marginTop="@dimen/_20dp"
-                android:background="@drawable/bg_rounded"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/download"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_20sp" />
-
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="@color/primary_yellow"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
