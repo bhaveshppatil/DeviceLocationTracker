@@ -3,6 +3,10 @@
 
 The Location Tracker app allows users to track their location in real-time, save location data to a CSV file, and download the file for further analysis. It's designed for individuals who want to monitor their movement history or researchers who need to collect location data for studies or projects.
 
+<div style="text-align: center;">
+  <a href="https://drive.google.com/file/d/1jJ1S2ND9g4luKrhvmigXt-INwbt5I-yr/view?usp=sharing">Demo Video</a>
+</div>
+
 ## Features
 
 - Start and stop location tracking.
